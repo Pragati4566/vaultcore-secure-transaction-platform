@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: nivora-finance-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nivora
+    username: postgres
+    password: My_password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true

@@ -1,0 +1,21 @@
+app:
+  rate-limit:
+    login:
+      limit: 1000
+      window-seconds: 60
+
+    signup:
+      limit: 1000
+      window-seconds: 60
+
+    verify-otp:
+      limit: 1000
+      window-seconds: 60
+
+    transfer:
+      limit: 100000
+      window-seconds: 60
+
+    qr-payment:
+      limit: 100000
+      window-seconds: 60
