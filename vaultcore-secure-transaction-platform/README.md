@@ -1,220 +1,371 @@
-# 🚀 Nivora Finance Backend
+# 🔐 VaultCore — Secure Transaction & Wallet Platform
 
-> A production-oriented fintech backend built with **Spring Boot 4**, **Java 21**, **PostgreSQL**, **Redis**, **JWT Authentication**, **Flyway**, **Docker**, **Testcontainers**, and **GitHub Actions**.
+> A production-oriented fintech backend built with **Java 21**, **Spring Boot 4**, **PostgreSQL**, **Redis**, **Spring Security**, **JWT**, **Flyway**, **Docker**, **Testcontainers**, and **GitHub Actions**.
 
 ---
 
 ## ✨ Overview
 
-Nivora Finance Backend is a production-oriented digital wallet backend designed to demonstrate modern backend engineering practices beyond basic CRUD applications.
+**VaultCore** is a secure digital wallet and transaction platform designed to demonstrate modern backend engineering practices beyond basic CRUD applications.
 
-The project implements secure authentication, wallet management, money transfers, QR-based payments, and Redis-powered rate limiting while focusing on scalability, maintainability, and clean architecture.
+The platform focuses on secure authentication, wallet management, money transfers, QR-based payments, transaction consistency, API protection, automated testing, and containerized deployment.
 
-To make the project closer to a real-world backend, it incorporates database versioning with Flyway, integration testing using Testcontainers, containerized development with Docker, automated CI/CD using GitHub Actions, and production-ready development practices.
+The backend is designed with maintainability and reliability in mind, incorporating:
+
+* Secure authentication and authorization
+* Transactional money transfers
+* Database versioning with Flyway
+* Redis-based session management and rate limiting
+* PostgreSQL persistence
+* Automated unit and integration testing
+* Docker-based local development
+* CI/CD with GitHub Actions
+* API documentation using Swagger / OpenAPI
+* Global validation and exception handling
 
 ---
 
 ## 🎯 Project Goals
 
-This project was built with the objective of learning and implementing production-grade backend development concepts, including:
+VaultCore is designed to provide hands-on experience with production-oriented backend engineering concepts, including:
 
-- Secure authentication and authorization using Spring Security and JWT
-- Reliable wallet transactions with transactional consistency
-- Database versioning using Flyway
-- Redis-backed session management and rate limiting
-- Containerized development using Docker and Docker Compose
-- Automated testing with JUnit, Mockito, and Testcontainers
-- Continuous Integration using GitHub Actions
-- Clean, modular, and maintainable backend architecture
+* Building secure **REST APIs**
+* Designing transactional backend services
+* Implementing authentication and authorization
+* Handling concurrent wallet updates safely
+* Using Redis for session management and rate limiting
+* Managing database schema changes with Flyway
+* Writing unit and integration tests
+* Containerizing backend services with Docker
+* Automating software delivery with GitHub Actions
+* Designing modular and maintainable application architecture
 
+---
 
-## ✨ Features
+# ✨ Core Features
 
 ## 🔐 Authentication
 
-- User Registration
-- Email OTP Verification
-- Login
-- Logout
-- JWT Authentication
-- BCrypt Password Encryption
-- Redis Session Management
-- Current User Endpoint
+* User Registration
+* Email OTP Verification
+* Login
+* Logout
+* JWT Authentication
+* BCrypt Password Hashing
+* Redis Session Management
+* Current User Endpoint
+* Protected API Routes
 
 ---
 
-## 💰 Wallet
+## 💰 Wallet Management
 
-- Create Wallet
-- Deposit Money
-- Withdraw Money
-- Wallet Balance
-- Balance Validation
-- Pessimistic Database Locking for Concurrent Updates
+* Create Wallet
+* Deposit Money
+* Withdraw Money
+* View Wallet Balance
+* Balance Validation
+* Concurrent Balance Protection
+* Pessimistic Database Locking
+
+Wallet operations are implemented with transactional consistency to prevent invalid balance updates during concurrent operations.
 
 ---
 
-## 💸 Transactions
+## 💸 Money Transfers
 
-- Money Transfer
-- Transaction History
-- Transaction Search
-- Transaction Summary
-- Recent Contacts
-- Idempotency-Key Support
-- Atomic Money Transfers
-- Transaction Validation
+* Transfer Money Between Users
+* Transaction History
+* Transaction Search
+* Transaction Summary
+* Recent Contacts
+* Transaction Validation
+* Idempotency-Key Support
+* Atomic Money Transfers
+
+The transfer workflow is designed so that debit and credit operations are handled atomically, reducing the risk of inconsistent wallet balances.
 
 ---
 
 ## 📱 QR Payments
 
-- Generate Personal QR
-- Resolve QR
-- Pay Using QR
+VaultCore supports QR-based payment workflows:
+
+* Generate Personal QR
+* Resolve QR
+* Pay Using QR
+
+QR payments reuse the same secure transaction workflow as standard money transfers.
 
 ---
 
-## 🛡️ Security
+# 🛡️ Security
 
-- Spring Security
-- JWT Authorization Filter
-- Protected APIs
-- Public Route Configuration
-- BCrypt Password Encoding
-- Redis Session Management
-- Redis Rate Limiting
-- Global Exception Handling
-- Request Validation
+Security is implemented using **Spring Security**, **JWT**, and **Redis**.
+
+### Security Components
+
+* Spring Security
+* JWT Authentication
+* JWT Authorization Filter
+* BCrypt Password Hashing
+* Protected API Routes
+* Public Route Configuration
+* Request Validation
+* Global Exception Handling
+* Redis Session Management
+* Redis Rate Limiting
+
+Authentication and authorization are handled centrally so that protected endpoints consistently enforce access control.
 
 ---
 
-## 🚦 Rate Limiting
+# 🚦 Rate Limiting
 
-Implemented using Redis.
+VaultCore uses **Redis** to protect APIs from excessive requests.
 
 ### Public APIs
 
-- Signup
-- Login
-- Verify OTP
+Rate limiting can be applied to:
+
+* Signup
+* Login
+* OTP Verification
 
 ### Protected APIs
 
-- Money Transfer
-- QR Payments
+Rate limiting can also be applied to sensitive operations such as:
 
-### Features
+* Money Transfer
+* QR Payments
 
-- IP-based Rate Limiting
-- User-based Rate Limiting
-- Redis TTL
-- Automatic Counter Expiry
+### Rate-Limiting Strategy
 
----
+* IP-based Rate Limiting
+* User-based Rate Limiting
+* Redis TTL
+* Automatic Counter Expiry
 
-## 🐳 Infrastructure
-
-- Docker
-- Docker Compose
-- PostgreSQL
-- Redis
-- Flyway Database Migrations
-- Multi-stage Docker Build
-- Health Checks
+This provides a lightweight protection mechanism for authentication and transaction-sensitive endpoints.
 
 ---
 
-## ⚙️ CI/CD
+# 🗄️ Data & Persistence
 
-Implemented using GitHub Actions.
+### PostgreSQL
 
-The pipeline automatically:
+PostgreSQL is used as the primary relational database for:
 
-- Runs Unit Tests
-- Runs Integration Tests
-- Builds BootJar
-- Builds Docker Image
-- Publishes Docker Image to GitHub Container Registry (GHCR)
+* Users
+* Wallets
+* Transactions
+* QR payment records
+* Authentication-related data
 
----
+### Flyway
 
-## 🧪 Testing
+Database schema changes are managed through **Flyway migrations**.
 
-Testing is implemented using:
+Benefits include:
 
-- JUnit 5
-- Mockito
-- Testcontainers
-- PostgreSQL Test Container
-- Flyway Test Migrations
+* Version-controlled schema changes
+* Repeatable development environments
+* Consistent database initialization
+* Safer schema evolution
 
-Current coverage includes:
+### JPA / Hibernate
 
-- AuthService
-- JwtService
-- WalletService
-- TransactionService
-- QrService
-- RateLimitService
-- End-to-End Transfer Integration Test
+The persistence layer uses:
 
-
-
-## 🛠️ Tech Stack
-
-| Category | Technology |
-|-----------|------------|
-| Language | Java 21 |
-| Framework | Spring Boot 4 |
-| Security | Spring Security, JWT |
-| Database | PostgreSQL |
-| Cache | Redis |
-| ORM | Spring Data JPA / Hibernate |
-| Database Migration | Flyway |
-| Build Tool | Gradle |
-| API Documentation | Swagger / OpenAPI |
-| Testing | JUnit 5, Mockito, Testcontainers |
-| Containerization | Docker |
-| Orchestration | Docker Compose |
-| CI/CD | GitHub Actions |
-| Container Registry | GitHub Container Registry (GHCR) |
+* Spring Data JPA
+* Hibernate
+* Entity relationships
+* Transaction management
+* Repository abstractions
 
 ---
 
-## 🏗️ Architecture
+# ⚡ Redis
 
+Redis is used for fast, short-lived application data and API protection.
+
+### Redis Use Cases
+
+* Session management
+* Rate limiting
+* TTL-based counters
+* Temporary authentication-related state
+
+Using Redis reduces the need to repeatedly access PostgreSQL for short-lived data.
+
+---
+
+# 🐳 Docker & Infrastructure
+
+VaultCore supports containerized development using **Docker** and **Docker Compose**.
+
+### Infrastructure Components
+
+* Spring Boot application
+* PostgreSQL
+* Redis
+
+### Docker Features
+
+* Multi-stage Docker build
+* Docker Compose
+* Service configuration through environment variables
+* Health checks
+* Reproducible local development environment
+
+Start the complete local environment with:
+
+```bash
+docker compose up --build
 ```
-                           Client
-                              │
-                              ▼
-                     Spring Boot Backend
-          ┌───────────────────┼───────────────────┐
-          │                   │                   │
-          ▼                   ▼                   ▼
-     PostgreSQL             Redis           Mail Service
-          ▲
+
+---
+
+# 🧪 Testing
+
+Testing is an important part of the project.
+
+### Testing Stack
+
+* **JUnit 5**
+* **Mockito**
+* **Testcontainers**
+* PostgreSQL Test Container
+* Spring Boot Test
+* Flyway test migrations
+
+### Testing Coverage
+
+The test suite is designed to cover important business and security components such as:
+
+* Authentication services
+* JWT services
+* Wallet services
+* Transaction services
+* QR payment services
+* Rate-limiting services
+* Security behavior
+* End-to-end money transfer workflows
+
+Testcontainers allows integration tests to execute against real containerized infrastructure instead of relying only on mocks.
+
+---
+
+# 📚 API Documentation
+
+VaultCore exposes API documentation using **Swagger / OpenAPI**.
+
+After starting the application:
+
+```text
+http://localhost:8080/swagger-ui/index.html
+```
+
+The documentation provides an interactive view of available endpoints, request parameters, responses, and authentication requirements.
+
+---
+
+# ⚙️ CI/CD
+
+VaultCore uses **GitHub Actions** for automated software validation and container image generation.
+
+## Pipeline
+
+```text
+Developer
+    │
+    ├── Pull Request
+    │
+    ▼
+GitHub Actions
+    │
+    ├── Compile
+    ├── Unit Tests
+    ├── Integration Tests
+    └── Build Verification
           │
-     Flyway Migrations
-
-                              │
-                              ▼
-                  GitHub Actions CI/CD
-
-                              │
-                              ▼
-               GitHub Container Registry
+          ▼
+      Main Branch
+          │
+          ├── Build BootJar
+          ├── Build Docker Image
+          └── Publish Image
+                  │
+                  ▼
+        GitHub Container Registry
 ```
+
+### CI Workflow
+
+Pull requests and code changes are automatically validated through:
+
+* Compilation
+* Unit tests
+* Integration tests
+* Application build
+
+### Container Workflow
+
+After successful validation on the main branch:
+
+* Spring Boot application is packaged
+* Docker image is built
+* Container image is published to **GitHub Container Registry (GHCR)**
+
+This keeps the build and delivery workflow automated and repeatable.
 
 ---
 
-## 📁 Project Structure
+# 🏗️ Architecture
 
+```text
+                         Client
+                           │
+                           ▼
+                  Spring Boot Application
+                           │
+             ┌─────────────┼─────────────┐
+             │             │             │
+             ▼             ▼             ▼
+          Auth/API      Wallet/API    QR/API
+             │             │             │
+             └─────────────┼─────────────┘
+                           │
+            ┌──────────────┴──────────────┐
+            │                             │
+            ▼                             ▼
+       PostgreSQL                       Redis
+            │                             │
+            ▼                             ▼
+     Flyway Migrations             Sessions / Limits
+            │
+            ▼
+      Transaction Layer
+
+                           │
+                           ▼
+                    GitHub Actions
+                           │
+                           ▼
+                GitHub Container Registry
 ```
+
+The application is organized into domain-oriented modules so authentication, wallet, transaction, QR, security, and common infrastructure concerns remain separated.
+
+---
+
+# 📁 Project Structure
+
+```text
 src
 ├── main
 │   ├── java
-│   │   └── com.nivora.nivora_finance_backend
+│   │   └── com.vaultcore.vaultcore
 │   │       ├── auth
 │   │       ├── config
 │   │       ├── qr
@@ -240,17 +391,28 @@ src
 
 # 🚀 Getting Started
 
+## Prerequisites
+
+Make sure the following are installed:
+
+* Java 21
+* Docker
+* Docker Compose
+* Git
+
+---
+
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/Harshjha002/nivora-finance-backend.git
+git clone https://github.com/Pragati4566/vaultcore-secure-transaction-platform.git
 
-cd nivora-finance-backend
+cd vaultcore-secure-transaction-platform
 ```
 
 ---
 
-## Configure Environment Variables
+## Environment Configuration
 
 Create a `.env` file in the project root.
 
@@ -261,11 +423,11 @@ Example:
 # PostgreSQL
 # ----------------------------
 
-POSTGRES_DB=nivora
+POSTGRES_DB=vaultcore
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=password
 
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/nivora
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/vaultcore
 SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=password
 
@@ -283,7 +445,7 @@ SPRING_DATA_REDIS_PORT=6379
 JWT_SECRET=your-super-secret-jwt-key
 
 # ----------------------------
-# Mail
+# Mail / OTP
 # ----------------------------
 
 MAIL_HOST=smtp.gmail.com
@@ -298,191 +460,248 @@ MAIL_PASSWORD=your-app-password
 CORS_ALLOWED_ORIGIN=http://localhost:3000
 ```
 
+> Never commit real credentials, JWT secrets, database passwords, or mail credentials to GitHub.
+
 ---
 
-## 🐳 Running with Docker
+# 🐳 Running with Docker
 
-Start all required services using Docker Compose.
+Start the complete application stack:
 
 ```bash
 docker compose up --build
 ```
 
-Once the containers are running:
+Backend:
 
-Backend
-
-```
+```text
 http://localhost:8080
 ```
 
-Swagger UI
+Swagger UI:
 
-```
+```text
 http://localhost:8080/swagger-ui/index.html
 ```
 
 ---
 
-## 💻 Running Locally
+# 💻 Running Locally
 
 ### 1. Start PostgreSQL and Redis
-
-If you're using Docker:
 
 ```bash
 docker compose up postgres redis
 ```
 
-### 2. Run the application
+### 2. Start the Spring Boot application
 
 ```bash
 ./gradlew bootRun
 ```
 
-The application will automatically:
+Flyway will apply the configured database migrations when the application starts.
 
-- Apply Flyway database migrations
-- Connect to PostgreSQL
-- Connect to Redis
-- Start the embedded web server
+Backend:
 
-Backend
-
-```
+```text
 http://localhost:8080
 ```
 
 ---
 
-## 📖 API Documentation
+# 🔎 API Examples
 
-Swagger UI is available after the application starts.
+Typical API groups include:
 
+```text
+/api/auth/*
+/api/users/*
+/api/wallet/*
+/api/transactions/*
+/api/qr/*
 ```
-http://localhost:8080/swagger-ui/index.html
-```
+
+Exact endpoints are documented through Swagger/OpenAPI.
 
 ---
 
-# ⚙️ CI/CD Pipeline
+# 🔄 Transaction Safety
 
-The project uses **GitHub Actions** to automate build verification and container image generation.
+Money movement is treated as a critical business operation.
 
-### Pipeline Workflow
+The transaction workflow is designed around:
 
-```
-Developer
+* Database transactions
+* Balance validation
+* Pessimistic locking
+* Atomic updates
+* Idempotency protection
+* Consistent error handling
 
-     │
-
- Git Push / Pull Request
-
-     │
-
-     ▼
-
-GitHub Actions
-
-     │
-
-     ▼
-
-Run Unit Tests
-
-     │
-
-     ▼
-
-Run Integration Tests
-
-     │
-
-     ▼
-
-Build BootJar
-
-     │
-
-     ▼
-
-Build Docker Image
-
-     │
-
-     ▼
-
-Publish Docker Image to GitHub Container Registry (GHCR)
-```
-
-Every push or pull request to the `main` branch automatically:
-
-- Runs Unit Tests
-- Runs Integration Tests using Testcontainers
-- Builds the Spring Boot application
-- Builds a Docker image
-- Publishes the Docker image to GitHub Container Registry (GHCR)
+These mechanisms help prevent invalid or duplicated money-transfer operations.
 
 ---
 
-# 📌 Current Project Status
+# 📈 Reliability & Engineering Practices
 
-### ✅ Completed
+VaultCore focuses on engineering practices that are useful in production-oriented backend systems:
 
-- Authentication Module
-- Wallet Module
-- Transaction Module
-- QR Payment Module
-- Spring Security
-- JWT Authentication
-- Redis Session Management
-- Redis Rate Limiting
-- Flyway Database Migrations
-- Docker
-- Docker Compose
-- GitHub Actions CI/CD
-- GitHub Container Registry (GHCR)
-- Unit Testing
-- Integration Testing (Testcontainers)
+* Input validation
+* Centralized exception handling
+* Database migrations
+* Automated testing
+* API documentation
+* Rate limiting
+* Transaction boundaries
+* Containerized development
+* Health checks
+* CI/CD automation
+* Version control
+* Modular application structure
 
-### 🚧 Planned
+---
 
-- AWS Deployment
-- Refresh Token Support
-- Kafka Notification Service
-- Email Notification Service
-- Monitoring & Observability
-- Payment Gateway Integration
-- Ledger Service
-- Microservices Migration
+# 🛠️ Tech Stack
+
+| Category                | Technology                       |
+| ----------------------- | -------------------------------- |
+| Language                | Java 21                          |
+| Framework               | Spring Boot 4                    |
+| Security                | Spring Security, JWT             |
+| Database                | PostgreSQL                       |
+| Cache / Fast Data Store | Redis                            |
+| ORM                     | Spring Data JPA, Hibernate       |
+| Database Migration      | Flyway                           |
+| Build Tool              | Gradle                           |
+| API Documentation       | Swagger / OpenAPI                |
+| Testing                 | JUnit 5, Mockito, Testcontainers |
+| Containerization        | Docker                           |
+| Orchestration           | Docker Compose                   |
+| CI/CD                   | GitHub Actions                   |
+| Container Registry      | GitHub Container Registry        |
+
+---
+
+# 📌 Development Roadmap
+
+## Phase 1 — Core Backend
+
+* [ ] Authentication
+* [ ] OTP verification
+* [ ] JWT authorization
+* [ ] User management
+* [ ] Wallet creation
+* [ ] Deposit / withdrawal
+* [ ] Money transfers
+* [ ] Transaction history
+
+## Phase 2 — Security & Reliability
+
+* [ ] Redis session management
+* [ ] API rate limiting
+* [ ] Idempotency keys
+* [ ] Concurrent transaction protection
+* [ ] Global exception handling
+* [ ] Request validation
+
+## Phase 3 — Engineering Infrastructure
+
+* [ ] Flyway migrations
+* [ ] Docker
+* [ ] Docker Compose
+* [ ] Unit tests
+* [ ] Integration tests
+* [ ] Testcontainers
+* [ ] Swagger / OpenAPI
+* [ ] GitHub Actions
+
+## Phase 4 — Advanced Improvements
+
+* [ ] Refresh-token workflow
+* [ ] Notification service
+* [ ] Monitoring and observability
+* [ ] Payment gateway integration
+* [ ] Ledger service
+* [ ] Event-driven architecture
+
+---
+
+# 🚧 Current Project Status
+
+VaultCore is being developed as a **production-oriented backend engineering project**.
+
+The implementation roadmap prioritizes:
+
+**Security → Transactions → Testing → CI/CD → Reliability → Observability**
+
+The README should be updated as each feature is actually implemented and tested.
+
+---
+
+# 🎓 Engineering Concepts Demonstrated
+
+VaultCore is intended to demonstrate practical understanding of:
+
+* REST API design
+* Backend service development
+* Object-oriented programming
+* Layered architecture
+* Authentication and authorization
+* Database transactions
+* Concurrency control
+* Data consistency
+* Caching
+* Rate limiting
+* Unit testing
+* Integration testing
+* CI/CD
+* Docker containerization
+* Database migrations
+* API documentation
+* Secure application development
 
 ---
 
 # 🤝 Contributing
 
-Contributions, suggestions, and improvements are welcome.
+This repository is primarily a personal engineering project.
 
-If you'd like to contribute:
+For local development:
 
-1. Fork the repository.
-2. Create a new feature branch.
-3. Commit your changes.
-4. Open a Pull Request.
+```bash
+git checkout -b feature/<feature-name>
+```
+
+Make your changes, add tests where applicable, and create a pull request after validating the application locally.
 
 ---
 
 # 📄 License
 
-This project is licensed under the **MIT License**.
+This project is intended to be released under the **MIT License**.
 
-See the [LICENSE](LICENSE) file for more details.
+See the [`LICENSE`](LICENSE) file for details.
+
+> If any source code is directly adapted from an MIT-licensed reference repository, retain the required copyright and license notices as applicable.
 
 ---
 
-# 👨‍💻 Author
+# 👩‍💻 Author
 
-**Harsh Jha**
+**Pragati Chaudhary**
 
-Backend Developer | Java | Spring Boot | PostgreSQL | Redis | Docker
+B.Tech, Electronics and Communication Engineering
+Indira Gandhi Delhi Technical University for Women
 
-If you found this project helpful or interesting, consider giving it a ⭐ on GitHub.
+**GitHub:** https://github.com/Pragati4566
+
+---
+
+## ⭐ Project Focus
+
+VaultCore is built to demonstrate that a backend project can go beyond basic CRUD by combining:
+
+**Secure APIs + Transactional Consistency + Testing + CI/CD + Containerization + Reliability**
+
+The goal is to build a backend that is understandable, testable, maintainable, and suitable for real-world software engineering practices.
